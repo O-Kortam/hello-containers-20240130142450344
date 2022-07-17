@@ -39,10 +39,19 @@ $zoom-wrapper-theme: mat.define-light-theme(
 .zmwebsdk-makeStyles-root-55,
 .zmwebsdk-makeStyles-root-1109,
 .zmwebsdk-makeStyles-root-1114 {
-  height: 32.4rem !important;
-  width: 36rem !important;
+  height: 30rem !important;
+  width: 28rem !important;
 }
-
+#zmmtg-root {
+  z-index: -1;
+  background-color: transparent !important;
+}
+.zmwebsdk-makeStyles-panel-85 {
+  width: 300px !important;
+}
+.zmwebsdk-makeStyles-panel-88 {
+  width: 300px !important;
+}
 html,
 body {
   height: 100%;

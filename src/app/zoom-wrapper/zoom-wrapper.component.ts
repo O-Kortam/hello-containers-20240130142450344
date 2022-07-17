@@ -69,7 +69,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
                 height: 300,
               },
               ribbon: {
-                width: 300,
+                width: 400,
                 height: 300,
               },
             },
