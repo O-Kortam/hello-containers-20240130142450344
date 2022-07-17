@@ -1,0 +1,7 @@
+<div [class.row]="hasMeeting">
+  <div class="wrapper" [class.loading]="loading">
+    <mat-spinner *ngIf="loading" color="primary"></mat-spinner>
+    <div *ngIf="meetingStarted" class="header_wrapper"></div>
+    <div id="meetingSDKElement"></div>
+  </div>
+</div>
