@@ -4,17 +4,17 @@ import {
   Component,
   EventEmitter,
   Inject,
-  Input,
   OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { ZoomMtg } from '@zoomus/websdk';
 import ZoomMtgEmbedded from '@zoomus/websdk/embedded';
 import { interval, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 ZoomMtg.setZoomJSLib('https://source.zoom.us/2.4.5/lib', '/av');
 
@@ -24,7 +24,6 @@ ZoomMtg.setZoomJSLib('https://source.zoom.us/2.4.5/lib', '/av');
   styleUrls: ['./zoom-wrapper.component.scss'],
 })
 export class ZoomWrapperComponent implements OnInit, OnDestroy {
-  signatureEndpoint = 'https://eshtri-aqar.herokuapp.com';
   apiKey = 'KvCAXBWxSCWGarDTtwNynA';
   meetingNumber = '';
   role = 0;
@@ -87,16 +86,17 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
           ],
         },
       })
-      .then(() => this.getSignature());
+      .then(() => this.getSignature())
+      .catch((err) => {
+        console.log(err);
+      });
   }
   getSignature() {
     this.hasMeeting = true;
-    this.loading = true;
-    setTimeout(() => {
-      this.loading = false;
-    }, 1800);
+    console.log('start');
+    window.parent.postMessage('Open', '*');
     this.httpClient
-      .post(this.signatureEndpoint, {
+      .post(environment.baseUrl, {
         meetingNumber: this.meetingNumber,
         role: this.role,
       })
@@ -121,6 +121,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
       })
       .catch((error) => {
         console.log(error);
+        window.parent.postMessage('Error', '*');
         this.loading = false;
         this.hasMeeting = false;
       });
@@ -139,48 +140,24 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
       })
       .then((res) => {
         this.meetingStarted = true;
-        this.subscription = interval(1).subscribe((x) => {
-          if (
-            document.getElementsByClassName(
-              'zmwebsdk-makeStyles-videoCustomize-1'
-            ).length == 0
-          ) {
-            this.meetingStarted = false;
-            this.hasMeeting = false;
-            this.joinedMeeting.emit('joined');
-          } else {
-            let popup = document.getElementsByClassName(
-              'zmwebsdk-makeStyles-paper-53'
-            )[0];
-            let parent = popup?.parentNode;
-            if (parent?.parentElement.lastElementChild.classList.length == 0)
-              parent?.parentElement.lastElementChild.classList.toggle('test');
-            let popup2 = document.getElementsByClassName(
-              '.zmwebsdk-makeStyles-paper-67'
-            )[0];
-            let parent2 = popup2?.parentNode;
-            if (parent2?.parentElement.lastElementChild.classList.length == 0)
-              parent2?.parentElement.lastElementChild.classList.toggle('test');
-            this.meetingStarted = true;
-            this.hasMeeting = true;
+        this.subscription = interval(100).subscribe((x) => {
+          console.log(
+            document.getElementsByClassName('react-draggable').length
+          );
+          if (document.getElementsByClassName('react-draggable').length == 0) {
+            console.log(
+              document.getElementsByClassName('react-draggable').length
+            );
+            window.parent.postMessage('Close', '*');
           }
         });
       })
       .catch((err) => {
         console.log(err);
+        window.parent.postMessage(err, '*');
         if (err.errorCode && err.errorCode != 3707 && err.errorCode != -3000) {
           this.meetingStarted = true;
           this.hasMeeting = true;
-          // this.subscription = interval(1000).subscribe((x) => {
-          //   if (document.getElementsByClassName("zmwebsdk-makeStyles-videoCustomize-1").length == 0) {
-          //     this.meetingStarted = false;
-          //     this.hasMeeting = false;
-          //     this.joinedMeeting.emit("joined");
-          //   } else {
-          //     this.meetingStarted = true;
-          //     this.hasMeeting = true;
-          //   }
-          // });
         } else {
           this.meetingStarted = false;
           this.hasMeeting = false;
