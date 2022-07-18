@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eshtri-zoom-wrapper-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eshtri-zoom-wrapper-app
+  template:
+    metadata:
+      labels:
+        app: eshtri-zoom-wrapper-app
+    spec:
+      containers:
+        - name: eshtri-zoom-wrapper-app
+          image: webapp:1
+          ports:
+            - containerPort: 4200
+          resources:
+            limits:
+              memory: 1000Mi
+              cpu: 250m
+            requests:
+              memory: 200Mi
+              cpu: 125m
+      dnsPolicy: Default
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eshtri-zoom-wrapper-service-cip
+  labels:
+    app: eshtri-zoom-wrapper-app
+spec:
+  type: ClusterIP
+  ports:
+    # the port that this service should serve on
+    - port: 80
+      targetPort: 4200
+  # label keys and values that must match in order to receive traffic for this service
+  selector:
+    app: eshtri-zoom-wrapper-app
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: eshtri-zoom-wrapper-service
+#   labels:
+#     app: eshtri-zoom-wrapper-service
+# spec:
+#   type: NodePort
+#   ports:
+#     # the port that this service should serve on
+#     - port: 80
+#       targetPort: 8025
+#   # label keys and values that must match in order to receive traffic for this service
+#   selector:
+#     app: eshtri-zoom-wrapper-app
+
+# ---
+# apiVersion: networking.k8s.io/v1beta1
+# kind: Ingress
+# metadata:
+#   name: eshtri-zoom-wrapper-ingress
+# spec:
+#   rules:
+#   - host: eshtri-zoom-wrapper-app.cluster-ingress-subdomain
+#     http:
+#       paths:
+#       - backend:
+#           serviceName: eshtri-zoom-wrapper-service-cip
+#           servicePort: 80
+#         path: /
+#   tls:
+#   - hosts:
+#     - eshtri-zoom-wrapper-app.cluster-ingress-subdomain
+#     secretName: cluster-ingress-secret
