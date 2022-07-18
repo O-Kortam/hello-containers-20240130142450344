@@ -141,13 +141,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
       .then((res) => {
         this.meetingStarted = true;
         this.subscription = interval(100).subscribe((x) => {
-          console.log(
-            document.getElementsByClassName('react-draggable').length
-          );
           if (document.getElementsByClassName('react-draggable').length == 0) {
-            console.log(
-              document.getElementsByClassName('react-draggable').length
-            );
             window.parent.postMessage('Close', '*');
           }
         });
