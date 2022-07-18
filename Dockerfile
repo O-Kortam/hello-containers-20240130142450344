@@ -13,7 +13,7 @@ RUN ls
 # CMD ["nginx","-g","daemon off;"]
 
 FROM nginx:1.16.0-alpine as prod-stage
-COPY --from=build-step /app/dist/base-ecommerce /usr/share/nginx/html
+COPY --from=build-step /app/dist/zoom-wrapper /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 4200
 CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/environment/env.template.js > /usr/share/nginx/html/assets/environment/env.js && exec nginx -g 'daemon off;'"]
