@@ -65,11 +65,11 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
             viewSizes: {
               default: {
                 width: 480,
-                height: 300,
+                height: 400,
               },
               ribbon: {
                 width: 400,
-                height: 300,
+                height: 400,
               },
             },
           },
@@ -139,6 +139,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
         userEmail: this.userEmail,
       })
       .then((res) => {
+        window.parent.postMessage('Start', '*');
         this.meetingStarted = true;
         this.subscription = interval(100).subscribe((x) => {
           if (document.getElementsByClassName('react-draggable').length == 0) {
