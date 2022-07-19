@@ -18,6 +18,11 @@ import { environment } from 'src/environments/environment';
 
 ZoomMtg.setZoomJSLib('https://source.zoom.us/2.4.5/lib', '/av');
 
+ZoomMtg.preLoadWasm();
+ZoomMtg.prepareWebSDK();
+// loads language files, also passes any error messages to the ui
+ZoomMtg.i18n.load('en-US');
+ZoomMtg.i18n.reload('en-US');
 @Component({
   selector: 'app-zoom-wrapper',
   templateUrl: './zoom-wrapper.component.html',
@@ -39,6 +44,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
   leaveUrl = 'https://eshtriaqar.com.eg/';
   loading = false;
   subscription: Subscription;
+  isFullScreen = 0;
   constructor(
     public httpClient: HttpClient,
     @Inject(DOCUMENT) document: any,
@@ -49,47 +55,54 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    document.getElementById('zmmtg-root').style.display = 'none';
     this.router.params.subscribe((res: any) => {
       this.meetingNumber = res.id;
       this.passWord = res.pwd;
-    });
-    this.meetingSDKElement = document.getElementById('meetingSDKElement');
-    this.client
-      .init({
-        debug: true,
-        zoomAppRoot: this.meetingSDKElement,
-        language: 'en-US',
-        customize: {
-          video: {
-            isResizable: true,
-            viewSizes: {
-              default: {
-                width: 480,
-                height: 400,
+      this.isFullScreen = res.fullScreen;
+      console.log(res);
+      if (this.isFullScreen == 1) {
+        this.getSignature();
+      } else {
+        this.meetingSDKElement = document.getElementById('meetingSDKElement');
+        this.client
+          .init({
+            debug: true,
+            zoomAppRoot: this.meetingSDKElement,
+            language: 'en-US',
+            customize: {
+              video: {
+                isResizable: true,
+                viewSizes: {
+                  default: {
+                    width: 480,
+                    height: 400,
+                  },
+                  ribbon: {
+                    width: 400,
+                    height: 400,
+                  },
+                },
               },
-              ribbon: {
-                width: 400,
-                height: 400,
-              },
+              meetingInfo: [
+                'topic',
+                'host',
+                'mn',
+                'pwd',
+                'telPwd',
+                'invite',
+                'participant',
+                'dc',
+                'enctype',
+              ],
             },
-          },
-          meetingInfo: [
-            'topic',
-            'host',
-            'mn',
-            'pwd',
-            'telPwd',
-            'invite',
-            'participant',
-            'dc',
-            'enctype',
-          ],
-        },
-      })
-      .then(() => this.getSignature())
-      .catch((err) => {
-        console.log(err);
-      });
+          })
+          .then(() => this.getSignature())
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
   }
   getSignature() {
     this.hasMeeting = true;
@@ -128,35 +141,70 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
   }
 
   startMeeting(signature: any) {
-    this.hasMeeting = true;
-    this.client
-      .join({
-        sdkKey: 'XdFZ6asJoChJwirruwmfQR4CoLAEeJzYnq7G',
-        signature: signature,
-        meetingNumber: this.meetingNumber,
-        password: this.passWord,
-        userName: this.userName,
-        userEmail: this.userEmail,
-      })
-      .then((res) => {
-        window.parent.postMessage('Start', '*');
-        this.meetingStarted = true;
-        this.subscription = interval(100).subscribe((x) => {
-          if (document.getElementsByClassName('react-draggable').length == 0) {
-            window.parent.postMessage('Close', '*');
+    if (this.isFullScreen == 1) {
+      document.getElementById('zmmtg-root').style.display = 'block';
+      // document.getElementById('zmmtg-root').style.zIndex = '9999';
+      ZoomMtg.init({
+        leaveUrl: this.leaveUrl,
+        isSupportAV: true,
+        success: (success) => {
+          console.log(success);
+          ZoomMtg.join({
+            signature: this.signature,
+            meetingNumber: this.meetingNumber,
+            userName: this.userName,
+            sdkKey: 'XdFZ6asJoChJwirruwmfQR4CoLAEeJzYnq7G',
+            userEmail: this.userEmail,
+            passWord: this.passWord,
+            success: (success) => {
+              console.log(success);
+            },
+            error: (error) => {
+              console.log(error);
+            },
+          });
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+    } else {
+      this.hasMeeting = true;
+      this.client
+        .join({
+          sdkKey: 'XdFZ6asJoChJwirruwmfQR4CoLAEeJzYnq7G',
+          signature: signature,
+          meetingNumber: this.meetingNumber,
+          password: this.passWord,
+          userName: this.userName,
+          userEmail: this.userEmail,
+        })
+        .then((res) => {
+          window.parent.postMessage('Start', '*');
+          this.meetingStarted = true;
+          this.subscription = interval(100).subscribe((x) => {
+            if (
+              document.getElementsByClassName('react-draggable').length == 0
+            ) {
+              window.parent.postMessage('Close', '*');
+            }
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          window.parent.postMessage(err, '*');
+          if (
+            err.errorCode &&
+            err.errorCode != 3707 &&
+            err.errorCode != -3000
+          ) {
+            this.meetingStarted = true;
+            this.hasMeeting = true;
+          } else {
+            this.meetingStarted = false;
+            this.hasMeeting = false;
           }
         });
-      })
-      .catch((err) => {
-        console.log(err);
-        window.parent.postMessage(err, '*');
-        if (err.errorCode && err.errorCode != 3707 && err.errorCode != -3000) {
-          this.meetingStarted = true;
-          this.hasMeeting = true;
-        } else {
-          this.meetingStarted = false;
-          this.hasMeeting = false;
-        }
-      });
+    }
   }
 }

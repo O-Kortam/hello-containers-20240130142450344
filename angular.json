@@ -29,9 +29,22 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.scss"],
-            "scripts": []
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@zoomus/websdk/dist/lib/",
+                "output": "./node_modules/@zoomus/websdk/dist/lib/"
+              }
+            ],
+            "styles": [
+              "src/styles.scss",
+              "node_modules/@zoomus/websdk/dist/css/bootstrap.css",
+              "node_modules/@zoomus/websdk/dist/css/react-select.css"
+            ],
+            "scripts": [],
+            "allowedCommonJsDependencies": ["@zoomus/websdk"]
           },
           "configurations": {
             "production": {

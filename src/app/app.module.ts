@@ -10,7 +10,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgModule } from '@angular/core';
 import { ZoomWrapperComponent } from './zoom-wrapper/zoom-wrapper.component';
 
-const routes: Routes = [{ path: ':id/:pwd', component: ZoomWrapperComponent }];
+const routes: Routes = [
+  { path: ':id/:pwd/:fullScreen', component: ZoomWrapperComponent },
+];
 @NgModule({
   declarations: [AppComponent, ZoomWrapperComponent],
   imports: [

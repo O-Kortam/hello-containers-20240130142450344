@@ -48,8 +48,11 @@ $zoom-wrapper-theme: mat.define-light-theme(
   transform: translate(0px, -347px) !important;
 }
 #zmmtg-root {
-  z-index: -1;
+  // z-index: -1;
   background-color: transparent !important;
+}
+.video-avatar__avatar-name {
+  overflow: initial !important;
 }
 .zmwebsdk-makeStyles-panel-85 {
   width: 300px !important;
