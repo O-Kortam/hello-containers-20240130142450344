@@ -60,7 +60,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
       this.meetingNumber = res.id;
       this.passWord = res.pwd;
       this.isFullScreen = res.fullScreen;
-      console.log(res);
+      this.userName = res.name;
       if (this.isFullScreen == 1) {
         this.getSignature();
       } else {
