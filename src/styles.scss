@@ -69,3 +69,14 @@ body {
   margin: 0;
   min-width: auto !important;
 }
+.align-middle .av-preview-container {
+  width: auto !important;
+}
+#participant-window,
+#chat-window {
+  width: 300px !important;
+}
+.third-part-app-info__panel,
+.meeting-info-icon__meeting-paper {
+  width: 320px !important;
+}

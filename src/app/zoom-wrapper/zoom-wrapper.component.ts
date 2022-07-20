@@ -64,6 +64,9 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
       if (this.isFullScreen == 1) {
         this.getSignature();
       } else {
+        // window.parent.addEventListener('message', (e) => {
+        //   console.log(e);
+        // });
         this.meetingSDKElement = document.getElementById('meetingSDKElement');
         this.client
           .init({
@@ -75,12 +78,12 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
                 isResizable: true,
                 viewSizes: {
                   default: {
-                    width: 480,
-                    height: 400,
+                    width: window.screen.width * 0.35,
+                    height: window.screen.height * 0.4,
                   },
                   ribbon: {
-                    width: 400,
-                    height: 400,
+                    width: window.screen.width * 0.35,
+                    height: window.screen.height * 0.4,
                   },
                 },
               },
