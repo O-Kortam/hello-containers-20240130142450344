@@ -143,7 +143,6 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
   startMeeting(signature: any) {
     if (this.isFullScreen == 1) {
       document.getElementById('zmmtg-root').style.display = 'block';
-      // document.getElementById('zmmtg-root').style.zIndex = '9999';
       ZoomMtg.init({
         leaveUrl: this.leaveUrl,
         isSupportAV: true,
@@ -191,8 +190,14 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
           });
         })
         .catch((err) => {
-          console.log(err);
           window.parent.postMessage(err, '*');
+          this.subscription = interval(100).subscribe((x) => {
+            if (
+              document.getElementsByClassName('react-draggable').length == 0
+            ) {
+              window.parent.postMessage('Close', '*');
+            }
+          });
           if (
             err.errorCode &&
             err.errorCode != 3707 &&
