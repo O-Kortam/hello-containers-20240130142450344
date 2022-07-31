@@ -68,11 +68,13 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
         this.client
           .init({
             debug: true,
+
             zoomAppRoot: this.meetingSDKElement,
             language: 'en-US',
             customize: {
               video: {
                 isResizable: true,
+
                 viewSizes: {
                   default: {
                     width: window.screen.width * 0.3,
@@ -203,6 +205,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
             err.errorCode != 3707 &&
             err.errorCode != -3000
           ) {
+            window.parent.postMessage('Start', '*');
             this.meetingStarted = true;
             this.hasMeeting = true;
           } else {

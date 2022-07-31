@@ -42,6 +42,10 @@ $zoom-wrapper-theme: mat.define-light-theme(
 .zmwebsdk-makeStyles-root-1114 {
   height: 33rem !important;
   width: 33rem !important;
+  @media (max-width: 600px) {
+    height: 22rem !important;
+    width: 16rem !important;
+  }
 }
 .zmwebsdk-makeStyles-panel-92,
 .zmwebsdk-makeStyles-panel-85 {
@@ -79,4 +83,16 @@ body {
 .third-part-app-info__panel,
 .meeting-info-icon__meeting-paper {
   width: 320px !important;
+}
+.zmwebsdk-makeStyles-root-79,
+.zmwebsdk-makeStyles-root-85,
+.zmwebsdk-makeStyles-panel-102 {
+  min-width: auto !important;
+  width: fit-content !important;
+}
+@media (max-width: 600px) {
+  .ReactVirtualized__List {
+    width: 230px !important;
+    height: 300px !important;
+  }
 }
