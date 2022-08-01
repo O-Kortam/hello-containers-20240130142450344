@@ -103,14 +103,24 @@ body {
 
 @media (max-width: 600px) {
   .zmwebsdk-makeStyles-root-79 {
-    transform: translate(-7rem, -1rem) !important;
+    transform: translate(-6rem, -1rem) !important;
+    width: 16rem !important;
+  }
+  .zmwebsdk-makeStyles-root-1114 {
+    align-items: flex-start !important;
   }
   .zmwebsdk-makeStyles-list-68 {
     height: min(84vh - 178px, 484px) !important;
   }
+  .zmwebsdk-makeStyles-settingCustomize-11 {
+    transform: translate3d(10rem, 2rem, 0px) !important;
+  }
+  .zmwebsdk-makeStyles-paper-53 {
+    margin-top: -7rem !important;
+  }
 }
-.zmwebsdk-makeStyles-settingCustomize-11 {
-  transform: translate3d(288px, 1rem, 0px) !important;
+.zmwebsdk-makeStyles-participantsCustomize-9 {
+  transform: translate3d(115px, 8px, 0px) !important;
 }
 .zmwebsdk-MuiPaper-elevation1 {
   box-shadow: none !important;
