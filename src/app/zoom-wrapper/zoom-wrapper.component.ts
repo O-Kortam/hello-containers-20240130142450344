@@ -77,8 +77,8 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
 
                 viewSizes: {
                   default: {
-                    width: window.screen.width * 0.3,
-                    height: window.screen.height * 0.35,
+                    width: window.screen.width * 0.75,
+                    height: window.screen.height * 0.5,
                   },
                   ribbon: {
                     width: window.screen.width * 0.3,

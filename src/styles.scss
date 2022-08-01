@@ -43,8 +43,8 @@ $zoom-wrapper-theme: mat.define-light-theme(
   height: 33rem !important;
   width: 33rem !important;
   @media (max-width: 600px) {
-    height: 22rem !important;
-    width: 16rem !important;
+    height: 29rem !important;
+    width: 19rem !important;
   }
 }
 .zmwebsdk-makeStyles-panel-92,
@@ -95,5 +95,14 @@ body {
   .ReactVirtualized__List {
     width: 230px !important;
     height: 300px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .zmwebsdk-makeStyles-root-79 {
+    transform: translate(-7rem, -1rem) !important;
+  }
+  .zmwebsdk-makeStyles-list-68 {
+    height: min(84vh - 178px, 484px) !important;
   }
 }
