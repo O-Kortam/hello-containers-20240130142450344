@@ -102,7 +102,9 @@ body {
     height: 300px !important;
   }
 }
-
+.zmwebsdk-makeStyles-chatCustomize-10 {
+  transform: translate3d(2rem, 5px, 0px) !important;
+}
 @media (max-width: 600px) {
   .zmwebsdk-makeStyles-root-79 {
     transform: translate(-6rem, -1rem) !important;
@@ -133,6 +135,9 @@ body {
 }
 .zmwebsdk-MuiPaper-elevation1 {
   box-shadow: none !important;
+}
+.zmwebsdk-makeStyles-videoCustomize-8 {
+  position: initial !important;
 }
 // .zmwebsdk-MuiPaper-root {
 //   background-color: white !important;
