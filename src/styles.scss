@@ -90,7 +90,9 @@ body {
 .zmwebsdk-makeStyles-root-79,
 .zmwebsdk-makeStyles-root-85,
 .zmwebsdk-makeStyles-panel-102,
-.zmwebsdk-makeStyles-root-87 {
+.zmwebsdk-makeStyles-root-87,
+.zmwebsdk-makeStyles-root-81,
+.zmwebsdk-makeStyles-panel-98 {
   min-width: auto !important;
   width: fit-content !important;
 }
@@ -106,6 +108,12 @@ body {
     transform: translate(-6rem, -1rem) !important;
     width: 16rem !important;
   }
+  .zmwebsdk-makeStyles-chatCustomize-10 {
+    transform: translate3d(2rem, 5px, 0px) !important;
+  }
+  .zmwebsdk-makeStyles-panel-87 {
+    width: 300px !important;
+  }
   .zmwebsdk-makeStyles-root-1114 {
     align-items: flex-start !important;
   }
@@ -113,14 +121,15 @@ body {
     height: min(84vh - 178px, 484px) !important;
   }
   .zmwebsdk-makeStyles-settingCustomize-11 {
-    transform: translate3d(10rem, 2rem, 0px) !important;
+    transform: translate3d(2rem, 2rem, 0px) !important;
   }
-  .zmwebsdk-makeStyles-paper-53 {
+  .zmwebsdk-makeStyles-paper-53,
+  .zmwebsdk-makeStyles-paper-55 {
     margin-top: -7rem !important;
   }
 }
 .zmwebsdk-makeStyles-participantsCustomize-9 {
-  transform: translate3d(115px, 8px, 0px) !important;
+  transform: translate(3rem, 5rem) !important;
 }
 .zmwebsdk-MuiPaper-elevation1 {
   box-shadow: none !important;
