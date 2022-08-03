@@ -53,7 +53,6 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
   }
-
   ngOnInit(): void {
     document.getElementById('zmmtg-root').style.display = 'none';
     this.router.params.subscribe((res: any) => {
@@ -68,13 +67,14 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
         this.client
           .init({
             debug: true,
-
             zoomAppRoot: this.meetingSDKElement,
             language: 'en-US',
             customize: {
               video: {
+                popper: {
+                  disableDraggable: true,
+                },
                 isResizable: true,
-
                 viewSizes: {
                   default: {
                     width: window.document.body.clientHeight * 0.6,
