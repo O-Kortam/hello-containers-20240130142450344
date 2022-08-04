@@ -107,7 +107,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
   startMeeting() {
     document.getElementById('zmmtg-root').style.display = 'block';
     ZoomMtg.init({
-      leaveUrl: `${environment.baseUrl}/${this.meetingNumber}/${
+      leaveUrl: `${environment.zoomUrl}/${this.meetingNumber}/${
         this.passWord
       }/${this.userName}/${1}`,
       isSupportAV: true,
