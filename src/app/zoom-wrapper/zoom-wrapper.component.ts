@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { ZoomMtg } from '@zoomus/websdk';
 import ZoomMtgEmbedded from '@zoomus/websdk/embedded';
-import { interval, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
@@ -100,6 +100,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
       .catch((error) => {
         console.log(error);
         window.parent.postMessage('Error', '*');
+        this.getSignature();
         this.loading = false;
         this.hasMeeting = false;
       });
@@ -108,9 +109,9 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
   startMeeting() {
     document.getElementById('zmmtg-root').style.display = 'block';
     ZoomMtg.init({
-      leaveUrl: `${environment.zoomUrl}${this.meetingNumber}/${this.passWord}/${
-        this.userName
-      }/${1}`,
+      leaveUrl: `https://dev-zoom.k8s-cluster-poc-475abba301f29ce035eb2a3d8e891717-0000.eu-de.containers.appdomain.cloud/${
+        this.meetingNumber
+      }/${this.passWord}/${this.userName}/${1}`,
       isSupportAV: true,
       success: (success) => {
         console.log(success);
