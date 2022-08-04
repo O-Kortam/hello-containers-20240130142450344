@@ -58,6 +58,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
     this.router.params.subscribe((res: any) => {
       this.isEnd = res.end;
       if (this.isEnd == 1) {
+        console.log('test');
         document.body.style.backgroundColor = 'transparent';
         window.parent.postMessage('Close', '*');
       } else {
@@ -107,9 +108,9 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
   startMeeting() {
     document.getElementById('zmmtg-root').style.display = 'block';
     ZoomMtg.init({
-      leaveUrl: `${environment.zoomUrl}/${this.meetingNumber}/${
-        this.passWord
-      }/${this.userName}/${1}`,
+      leaveUrl: `${environment.zoomUrl}${this.meetingNumber}/${this.passWord}/${
+        this.userName
+      }/${1}`,
       isSupportAV: true,
       success: (success) => {
         console.log(success);
