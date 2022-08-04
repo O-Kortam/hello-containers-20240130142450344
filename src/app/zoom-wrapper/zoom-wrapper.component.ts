@@ -41,10 +41,10 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
   client = ZoomMtgEmbedded.createClient();
   signature = '';
   meetingStarted = false;
-  leaveUrl = 'https://eshtriaqar.com.eg/';
+  leaveUrl = '';
   loading = false;
+  isEnd = 0;
   subscription: Subscription;
-  isFullScreen = 0;
   constructor(
     public httpClient: HttpClient,
     @Inject(DOCUMENT) document: any,
@@ -56,53 +56,15 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     document.getElementById('zmmtg-root').style.display = 'none';
     this.router.params.subscribe((res: any) => {
-      this.meetingNumber = res.id;
-      this.passWord = res.pwd;
-      this.isFullScreen = res.fullScreen;
-      this.userName = res.name;
-      if (this.isFullScreen == 1) {
-        this.getSignature();
+      this.isEnd = res.end;
+      if (this.isEnd == 1) {
+        document.body.style.backgroundColor = 'transparent';
+        window.parent.postMessage('Close', '*');
       } else {
-        this.meetingSDKElement = document.getElementById('meetingSDKElement');
-        this.client
-          .init({
-            debug: true,
-            zoomAppRoot: this.meetingSDKElement,
-            language: 'en-US',
-            customize: {
-              video: {
-                popper: {
-                  disableDraggable: true,
-                },
-                isResizable: true,
-                viewSizes: {
-                  default: {
-                    width: window.document.body.clientHeight * 0.6,
-                    height: window.screen.height * 0.45,
-                  },
-                  ribbon: {
-                    width: window.document.body.clientHeight * 0.6,
-                    height: window.screen.height * 0.45,
-                  },
-                },
-              },
-              meetingInfo: [
-                'topic',
-                'host',
-                'mn',
-                'pwd',
-                'telPwd',
-                'invite',
-                'participant',
-                'dc',
-                'enctype',
-              ],
-            },
-          })
-          .then(() => this.getSignature())
-          .catch((err) => {
-            console.log(err);
-          });
+        this.meetingNumber = res.id;
+        this.passWord = res.pwd;
+        this.userName = res.name;
+        this.getSignature();
       }
     });
   }
@@ -127,7 +89,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
         if (data.signature) {
           this.loading = false;
           this.signature = data.signature;
-          this.startMeeting(data.signature);
+          this.startMeeting();
         } else {
           console.log(data);
           this.loading = false;
@@ -142,77 +104,36 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
       });
   }
 
-  startMeeting(signature: any) {
-    if (this.isFullScreen == 1) {
-      document.getElementById('zmmtg-root').style.display = 'block';
-      ZoomMtg.init({
-        leaveUrl: this.leaveUrl,
-        isSupportAV: true,
-        success: (success) => {
-          console.log(success);
-          ZoomMtg.join({
-            signature: this.signature,
-            meetingNumber: this.meetingNumber,
-            userName: this.userName,
-            sdkKey: 'XdFZ6asJoChJwirruwmfQR4CoLAEeJzYnq7G',
-            userEmail: this.userEmail,
-            passWord: this.passWord,
-            success: (success) => {
-              console.log(success);
-            },
-            error: (error) => {
-              console.log(error);
-            },
-          });
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
-    } else {
-      this.hasMeeting = true;
-      this.client
-        .join({
-          sdkKey: 'XdFZ6asJoChJwirruwmfQR4CoLAEeJzYnq7G',
-          signature: signature,
+  startMeeting() {
+    document.getElementById('zmmtg-root').style.display = 'block';
+    ZoomMtg.init({
+      leaveUrl: `http://localhost:4200/${this.meetingNumber}/${this.passWord}/${
+        this.userName
+      }/${1}`,
+      isSupportAV: true,
+      success: (success) => {
+        console.log(success);
+        ZoomMtg.join({
+          signature: this.signature,
           meetingNumber: this.meetingNumber,
-          password: this.passWord,
           userName: this.userName,
+          sdkKey: 'XdFZ6asJoChJwirruwmfQR4CoLAEeJzYnq7G',
           userEmail: this.userEmail,
-        })
-        .then((res) => {
-          window.parent.postMessage('Start', '*');
-          this.meetingStarted = true;
-          this.subscription = interval(100).subscribe((x) => {
-            if (
-              document.getElementsByClassName('react-draggable').length == 0
-            ) {
-              window.parent.postMessage('Close', '*');
-            }
-          });
-        })
-        .catch((err) => {
-          window.parent.postMessage(err, '*');
-          this.subscription = interval(100).subscribe((x) => {
-            if (
-              document.getElementsByClassName('react-draggable').length == 0
-            ) {
-              window.parent.postMessage('Close', '*');
-            }
-          });
-          if (
-            err.errorCode &&
-            err.errorCode != 3707 &&
-            err.errorCode != -3000
-          ) {
+          passWord: this.passWord,
+          success: (success) => {
             window.parent.postMessage('Start', '*');
             this.meetingStarted = true;
-            this.hasMeeting = true;
-          } else {
-            this.meetingStarted = false;
-            this.hasMeeting = false;
-          }
+            console.log(success);
+          },
+          error: (error) => {
+            window.parent.postMessage(error, '*');
+          },
         });
-    }
+      },
+      error: (error) => {
+        window.parent.postMessage(error, '*');
+        console.log(error);
+      },
+    });
   }
 }

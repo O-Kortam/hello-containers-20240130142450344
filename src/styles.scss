@@ -34,26 +34,7 @@ $zoom-wrapper-theme: mat.define-light-theme(
 // that you are using.
 @include mat.all-component-themes($zoom-wrapper-theme);
 
-.zmwebsdk-makeStyles-root-19,
-// .zmwebsdk-makeStyles-root-26,
-.zmwebsdk-makeStyles-root-55,
-.zmwebsdk-makeStyles-root-906,
-.zmwebsdk-makeStyles-root-1109,
-.zmwebsdk-makeStyles-root-1114 {
-  height: 100vh !important;
-  width: 100vw !important;
-  background-color: #242424 !important;
-  // @media (max-width: 600px) {
-  //   height: 29rem !important;
-  //   width: 19rem !important;
-  // }
-}
-.zmwebsdk-makeStyles-panel-92,
-.zmwebsdk-makeStyles-panel-85 {
-  transform: translate(0px, -347px) !important;
-}
 #zmmtg-root {
-  // z-index: -1;
   background-color: transparent !important;
 }
 .video-avatar__avatar-name {
@@ -69,12 +50,12 @@ html,
 body {
   height: 100%;
   min-width: auto !important;
-  background-color: #242424 !important;
+  // background-color: transparent !important;
 }
 body {
   margin: 0;
   min-width: auto !important;
-  background-color: #242424;
+  // background-color: transparent !important;
 }
 .align-middle .av-preview-container {
   width: auto !important;
@@ -87,74 +68,20 @@ body {
 .meeting-info-icon__meeting-paper {
   width: 320px !important;
 }
-.zmwebsdk-makeStyles-root-79,
-.zmwebsdk-makeStyles-root-85,
-.zmwebsdk-makeStyles-panel-102,
-.zmwebsdk-makeStyles-root-87,
-.zmwebsdk-makeStyles-root-81,
-.zmwebsdk-makeStyles-panel-98 {
-  min-width: auto !important;
-  width: fit-content !important;
-}
-@media (max-width: 600px) {
-  .ReactVirtualized__List {
-    width: 230px !important;
-    height: 300px !important;
-  }
-}
-.zmwebsdk-makeStyles-chatCustomize-10 {
-  transform: translate3d(2rem, 5px, 0px) !important;
-}
-@media (max-width: 600px) {
-  .zmwebsdk-makeStyles-root-79 {
-    transform: translate(-6rem, -1rem) !important;
-    width: 16rem !important;
-  }
-  .zmwebsdk-makeStyles-chatCustomize-10 {
-    transform: translate3d(2rem, 5px, 0px) !important;
-  }
-  .zmwebsdk-makeStyles-panel-87 {
-    width: 300px !important;
-  }
-  .zmwebsdk-makeStyles-root-1114 {
-    align-items: flex-start !important;
-  }
-  .zmwebsdk-makeStyles-list-68 {
-    height: min(84vh - 178px, 484px) !important;
-  }
-  .zmwebsdk-makeStyles-settingCustomize-11 {
-    transform: translate3d(2rem, 2rem, 0px) !important;
-  }
-  .zmwebsdk-makeStyles-paper-53,
-  .zmwebsdk-makeStyles-paper-55 {
-    margin-top: -7rem !important;
-  }
-}
-.zmwebsdk-makeStyles-participantsCustomize-9 {
-  transform: translate(3rem, 5rem) !important;
-}
-.zmwebsdk-MuiPaper-elevation1 {
-  box-shadow: none !important;
-}
-.zmwebsdk-makeStyles-videoCustomize-8 {
-  position: initial !important;
-}
-// .zmwebsdk-MuiPaper-root {
-//   background-color: white !important;
-//   background: white !important;
-// }
-// .zmwebsdk-MuiButton-textSizeSmall {
-//   color: black !important;
-// }
-// .zmwebsdk-MuiButton-label {
-//   color: red !important;
-//   background: black !important;
-//   padding: 0.3em !important;
-//   border-radius: 2rem !important;
-// }
-.ReactModal__Overlay--after-open {
+.meeting-title {
   display: none !important;
 }
-.zmwebsdk-makeStyles-root-238 {
-  max-height: 23rem !important;
+.full-screen-widget {
+  display: none !important;
+}
+.waiting-pannel-btn {
+  display: none !important;
+}
+.zm-modal,
+.common-window {
+  width: 300px !important;
+}
+.settings-dialog .settings-tabs > .zmu-tabs__tab-container .zmu-tabs__tab-bar,
+.settings-dialog {
+  width: 120px !important;
 }

@@ -11,7 +11,7 @@ import { NgModule } from '@angular/core';
 import { ZoomWrapperComponent } from './zoom-wrapper/zoom-wrapper.component';
 
 const routes: Routes = [
-  { path: ':id/:pwd/:fullScreen/:name', component: ZoomWrapperComponent },
+  { path: ':id/:pwd/:name/:end', component: ZoomWrapperComponent },
 ];
 @NgModule({
   declarations: [AppComponent, ZoomWrapperComponent],
