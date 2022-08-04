@@ -78,10 +78,11 @@ body {
 //   display: none !important;
 // }
 .zm-modal,
-.common-window {
+#settingsDialog,
+.settings-dialog {
   width: 300px !important;
 }
-.settings-dialog .settings-tabs > .zmu-tabs__tab-container .zmu-tabs__tab-bar,
-.settings-dialog {
+
+.settings-dialog .settings-tabs > .zmu-tabs__tab-container .zmu-tabs__tab-bar {
   width: 120px !important;
 }
