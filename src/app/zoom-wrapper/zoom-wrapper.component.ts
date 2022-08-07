@@ -72,7 +72,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
   getSignature() {
     this.hasMeeting = true;
     console.log('start');
-    window.parent.postMessage('Open', '*');
+
     this.httpClient
       .post(environment.baseUrl, {
         meetingNumber: this.meetingNumber,
@@ -87,6 +87,8 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
       .then((data: any) => {
         console.log(data);
         this.loading = false;
+        window.parent.postMessage('Open', '*');
+
         if (data.signature) {
           this.loading = false;
           this.signature = data.signature;
@@ -123,9 +125,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
           userEmail: this.userEmail,
           passWord: this.passWord,
           success: (success) => {
-            window.parent.postMessage('Start', '*');
             this.meetingStarted = true;
-            console.log(success);
           },
           error: (error) => {
             window.parent.postMessage(error, '*');
@@ -136,6 +136,21 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
         window.parent.postMessage(error, '*');
         console.log(error);
       },
+    });
+    ZoomMtg.inMeetingServiceListener('onUserJoin', (data) => {
+      console.log(data, 'onUserJoin');
+      if (data.isGuest) {
+        window.parent.postMessage('Start', '*');
+      }
+    });
+    ZoomMtg.inMeetingServiceListener('onUserLeave', (data) => {
+      console.log(data, 'onUserLeave');
+    });
+    ZoomMtg.inMeetingServiceListener('onMeetingStatus', (data) => {
+      console.log(data, 'onMeetingStatus');
+      if (data.meetingStatus == 3) {
+        window.parent.postMessage('Close', '*');
+      }
     });
   }
 }

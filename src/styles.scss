@@ -74,15 +74,36 @@ body {
 .full-screen-widget {
   display: none !important;
 }
-// .waiting-pannel-btn {
-//   display: none !important;
-// }
+
 .zm-modal,
 #settingsDialog,
 .settings-dialog {
   width: 300px !important;
 }
 
+#settingsDialog,
+.settings-dialog {
+  height: 500px !important;
+}
+
 .settings-dialog .settings-tabs > .zmu-tabs__tab-container .zmu-tabs__tab-bar {
   width: 120px !important;
+}
+#content_container {
+  width: 100% !important;
+}
+.media-preview-container {
+  margin: 0 !important;
+}
+.av-preview-container {
+  width: 300px !important;
+}
+.mini-layout-body {
+  width: 300px !important;
+}
+#app-signal.pop-panel__button-wrap .pop-panel__button {
+  display: none !important;
+}
+.meeting-info-container__full-screen {
+  top: 50px !important;
 }
