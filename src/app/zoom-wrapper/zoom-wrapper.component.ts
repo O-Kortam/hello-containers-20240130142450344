@@ -140,7 +140,10 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
     ZoomMtg.inMeetingServiceListener('onUserJoin', (data) => {
       console.log(data, 'onUserJoin');
       if (data.isGuest) {
-        window.parent.postMessage('Start', '*');
+        window.parent.postMessage('userJoined', '*');
+      }
+      if (data.isHost) {
+        window.parent.postMessage('hostJoined', '*');
       }
     });
     ZoomMtg.inMeetingServiceListener('onUserLeave', (data) => {
