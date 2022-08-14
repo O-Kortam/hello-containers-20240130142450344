@@ -149,6 +149,9 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
     ZoomMtg.inMeetingServiceListener('onUserLeave', (data) => {
       console.log(data, 'onUserLeave');
     });
+    ZoomMtg.showJoinAudioFunction({
+      show: false,
+    });
     ZoomMtg.inMeetingServiceListener('onMeetingStatus', (data) => {
       console.log(data, 'onMeetingStatus');
       if (data.meetingStatus == 3) {
