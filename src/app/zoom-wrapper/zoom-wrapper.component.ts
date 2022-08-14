@@ -144,7 +144,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
     setTimeout(function () {
       var startButton = document.getElementById('join-btn');
       startButton?.click();
-    }, 45);
+    }, 100);
 
     ZoomMtg.inMeetingServiceListener('onUserJoin', (data) => {
       console.log(data, 'onUserJoin');
