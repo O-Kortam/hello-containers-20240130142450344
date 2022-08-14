@@ -110,11 +110,14 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
 
   startMeeting() {
     document.getElementById('zmmtg-root').style.display = 'block';
+
     ZoomMtg.init({
       leaveUrl: `https://dev-zoom.k8s-cluster-poc-475abba301f29ce035eb2a3d8e891717-0000.eu-de.containers.appdomain.cloud/${
         this.meetingNumber
       }/${this.passWord}/${this.userName}/${1}`,
       isSupportAV: true,
+      disableJoinAudio: false,
+      audioPanelAlwaysOpen: true,
       success: (success) => {
         console.log(success);
         ZoomMtg.join({
@@ -132,11 +135,17 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
           },
         });
       },
+
       error: (error) => {
         window.parent.postMessage(error, '*');
         console.log(error);
       },
     });
+    setTimeout(function () {
+      var startButton = document.getElementById('join-btn');
+      startButton?.click();
+    }, 45);
+
     ZoomMtg.inMeetingServiceListener('onUserJoin', (data) => {
       console.log(data, 'onUserJoin');
       if (data.isGuest) {
@@ -149,9 +158,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
     ZoomMtg.inMeetingServiceListener('onUserLeave', (data) => {
       console.log(data, 'onUserLeave');
     });
-    ZoomMtg.showJoinAudioFunction({
-      show: false,
-    });
+
     ZoomMtg.inMeetingServiceListener('onMeetingStatus', (data) => {
       console.log(data, 'onMeetingStatus');
       if (data.meetingStatus == 3) {
