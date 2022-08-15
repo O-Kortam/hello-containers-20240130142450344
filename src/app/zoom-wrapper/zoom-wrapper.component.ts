@@ -44,7 +44,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
   leaveUrl = '';
   loading = false;
   isEnd = 0;
-  subscription: Subscription;
+  subscription: any;
   constructor(
     public httpClient: HttpClient,
     @Inject(DOCUMENT) document: any,
@@ -110,14 +110,15 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
 
   startMeeting() {
     document.getElementById('zmmtg-root').style.display = 'block';
+    this.subscription = setInterval(() => {
+      console.log('click');
+      document.getElementById('join-btn')?.click();
+    }, 10);
 
     ZoomMtg.init({
       leaveUrl: `https://dev-zoom.k8s-cluster-poc-475abba301f29ce035eb2a3d8e891717-0000.eu-de.containers.appdomain.cloud/${
         this.meetingNumber
       }/${this.passWord}/${this.userName}/${1}`,
-      isSupportAV: true,
-      disableJoinAudio: false,
-      audioPanelAlwaysOpen: true,
       success: (success) => {
         console.log(success);
         ZoomMtg.join({
@@ -141,15 +142,12 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
         console.log(error);
       },
     });
-    setTimeout(function () {
-      var startButton = document.getElementById('join-btn');
-      startButton?.click();
-    }, 100);
 
     ZoomMtg.inMeetingServiceListener('onUserJoin', (data) => {
       console.log(data, 'onUserJoin');
       if (data.isGuest) {
         window.parent.postMessage('userJoined', '*');
+        clearInterval(this.subscription);
       }
       if (data.isHost) {
         window.parent.postMessage('hostJoined', '*');
