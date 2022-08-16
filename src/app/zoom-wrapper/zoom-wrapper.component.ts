@@ -1,19 +1,10 @@
 import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import {
-  Component,
-  EventEmitter,
-  Inject,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ZoomMtg } from '@zoomus/websdk';
 import ZoomMtgEmbedded from '@zoomus/websdk/embedded';
-import { Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 ZoomMtg.setZoomJSLib('https://source.zoom.us/2.4.5/lib', '/av');
@@ -35,16 +26,12 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
   userName = 'Customer';
   userEmail = 'Customer@gmail.com';
   passWord = '';
-  @Output() joinedMeeting: EventEmitter<any> = new EventEmitter<any>();
-  hasMeeting = false;
   meetingSDKElement: HTMLElement;
   client = ZoomMtgEmbedded.createClient();
   signature = '';
-  meetingStarted = false;
   leaveUrl = '';
-  loading = false;
-  isEnd = 0;
   subscription: any;
+  meetingStarted = false;
   constructor(
     public httpClient: HttpClient,
     @Inject(DOCUMENT) document: any,
@@ -56,55 +43,34 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     document.getElementById('zmmtg-root').style.display = 'none';
     this.router.params.subscribe((res: any) => {
-      this.isEnd = res.end;
-      if (this.isEnd == 1) {
-        console.log('test');
-        document.body.style.backgroundColor = 'transparent';
-        window.parent.postMessage('Close', '*');
-      } else {
-        this.meetingNumber = res.id;
-        this.passWord = res.pwd;
-        this.userName = res.name;
-        this.getSignature();
-      }
+      this.meetingNumber = res.id;
+      this.passWord = res.pwd;
+      this.userName = res.name;
+      this.getSignature();
     });
   }
   getSignature() {
-    this.hasMeeting = true;
-    console.log('start');
-
     this.httpClient
       .post(environment.baseUrl, {
         meetingNumber: this.meetingNumber,
         role: this.role,
       })
-      .pipe(
-        tap(() => {
-          this.loading = false;
-        })
-      )
+
       .toPromise()
       .then((data: any) => {
         console.log(data);
-        this.loading = false;
         window.parent.postMessage('Open', '*');
-
         if (data.signature) {
-          this.loading = false;
           this.signature = data.signature;
           this.startMeeting();
         } else {
           console.log(data);
-          this.loading = false;
-          this.hasMeeting = false;
         }
       })
       .catch((error) => {
         console.log(error);
         window.parent.postMessage('Error', '*');
         this.getSignature();
-        this.loading = false;
-        this.hasMeeting = false;
       });
   }
 
@@ -128,9 +94,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
           sdkKey: 'XdFZ6asJoChJwirruwmfQR4CoLAEeJzYnq7G',
           userEmail: this.userEmail,
           passWord: this.passWord,
-          success: (success) => {
-            this.meetingStarted = true;
-          },
+          success: (success) => {},
           error: (error) => {
             window.parent.postMessage(error, '*');
           },
@@ -146,6 +110,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
     ZoomMtg.inMeetingServiceListener('onUserJoin', (data) => {
       console.log(data, 'onUserJoin');
       if (data.isGuest) {
+        this.meetingStarted = true;
         window.parent.postMessage('userJoined', '*');
         clearInterval(this.subscription);
       }
@@ -159,7 +124,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
 
     ZoomMtg.inMeetingServiceListener('onMeetingStatus', (data) => {
       console.log(data, 'onMeetingStatus');
-      if (data.meetingStatus == 3) {
+      if (data.meetingStatus == 3 && this.meetingStarted) {
         window.parent.postMessage('Close', '*');
       }
     });
