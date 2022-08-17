@@ -124,7 +124,7 @@ export class ZoomWrapperComponent implements OnInit, OnDestroy {
 
     ZoomMtg.inMeetingServiceListener('onMeetingStatus', (data) => {
       console.log(data, 'onMeetingStatus');
-      if (data.meetingStatus == 3 && this.meetingStarted) {
+      if (data.meetingStatus == 3) {
         window.parent.postMessage('Close', '*');
       }
     });
